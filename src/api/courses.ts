@@ -1,5 +1,5 @@
-import Core from '../api/core.json'
-import Electives from '../api/electives.json'
+import Core from './core.json'
+import Electives from './electives.json'
 
 interface Course {
 	core: typeof Core
