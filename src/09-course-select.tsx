@@ -27,7 +27,7 @@ export const CourseSelect = ({ department, onChange }: SelectProps) => {
 		setState({ ...state, loading: true, courses: [] })
 
 		await apiClient.loadCourses(department)(courses => {
-			setState({ ...state, loading: false, courses: courses })
+			setState({ ...state, loading: false, courses })
 		})
 	}
 
