@@ -101,4 +101,75 @@ describe('Sign Up', () => {
     cy.get('input[type="submit"]')
       .should('not.be.disabled')
   })
+
+  it('Displays error and disable submit button if email is not given or invalid', () => {
+    cy.visit('/')
+
+    cy.get('input[name="name"]')
+      .click()
+      .type('Some Name')
+      .should('have.value', 'Some Name')
+
+    cy.get('select[name="department"]')
+      .select('core')
+      .should('have.value', 'core')
+    
+    cy.get('img[alt="loading"]')
+      .should('exist')
+      .and('have.attr', 'src', '/img/loading.gif')
+
+    cy.get('select[name="course"]')
+      .select('git-it')
+      .should('have.value', 'git-it')
+    
+    cy.get('input[name="email"]')
+      .click()
+      .type(' ')
+      .should('have.value', ' ')
+      .clear()
+      .should('have.value', '')
+    
+    cy.get('span')
+      .eq(1)
+      .should('contain', 'Invalid Email')
+      .and('have.attr', 'style', 'color: red;')
+    
+    cy.get('input[type="submit"]')
+      .should('be.disabled')
+      
+    cy.get('input[name="email"]')
+      .type('some')
+      .should('have.value', 'some')
+    
+    cy.get('span')
+      .eq(1)
+      .should('contain', 'Invalid Email')
+    
+    cy.get('input[type="submit"]')
+      .should('be.disabled')
+      
+    cy.get('input[name="email"]')
+      .clear()
+      .type('some@email')
+      .should('have.value', 'some@email')
+    
+    cy.get('span')
+      .eq(1)
+      .should('contain', 'Invalid Email')
+    
+    cy.get('input[type="submit"]')
+      .should('be.disabled')
+    
+    cy.get('input[name="email"]')
+      .clear()
+      .type('some@email.com')
+      .should('have.value', 'some@email.com')
+    
+    cy.get('span')
+      .eq(1)
+      .should('contain', '')
+    
+    cy.get('input[type="submit"]')
+      .should('not.be.disabled')
+  })
 })
