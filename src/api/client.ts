@@ -1,11 +1,10 @@
 import { Courses } from './courses'
+import type { Person } from './person'
 
 interface ApiMethods {
 	loadCourses: (department: string) => (cb: (course: string[]) => void) => Promise<unknown>
-	loadPeople: () => {
-		then: (cb: (storage: any) => void) => any
-	}
-	savePeople: (people: Record<string, unknown>) => Promise<{
+	loadPeople: () => (cb: (storage: any) => void) => Promise<unknown>
+	savePeople: (people: Person[]) => Promise<{
 		success: boolean
 	}>
 }
@@ -13,14 +12,12 @@ interface ApiMethods {
 export const apiClient: ApiMethods = {
 	loadCourses: department => cb =>
 		new Promise(resolve => resolve(setTimeout(() => cb(Courses[department]), 1000))),
-	loadPeople: () => ({
-		then: cb => {
-			setTimeout(
-				() => cb(JSON.parse(localStorage.people || '[]')),
-				Math.random() * 1000
-			) as unknown as string
-		}
-	}),
+	loadPeople: () => cb =>
+		new Promise(resolve =>
+			resolve(
+				setTimeout(() => cb(JSON.parse(localStorage.people || '[]')), Math.random() * 1000)
+			)
+		),
 	savePeople: people => {
 		return new Promise(resolve => {
 			setTimeout(() => {
