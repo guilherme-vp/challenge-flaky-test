@@ -6,8 +6,9 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.ui.menu.fluid.pagination {
-	width: 80% !important;
+.ui {
+	width: 80%;
+	margin: 0 auto;
 }
 
 button {
