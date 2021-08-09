@@ -3,14 +3,14 @@ import React, { useState } from 'react'
 interface FieldProps {
 	name: string
 	value: string
-	placeholder?: string
-	validate: (value: string) => boolean
+	placeholder: string
+	validate: (value: string) => boolean | string
 	onChange: ({ name, value, error }) => void
 }
 
 interface FieldState {
 	value?: string
-	error?: boolean
+	error?: boolean | string
 }
 
 export const Field = ({
@@ -26,7 +26,7 @@ export const Field = ({
 	})
 
 	const handleChangeField = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const value = e.target.value
+		const { value } = e.target
 		const error = validate ? validate(value) : false
 
 		setState({
