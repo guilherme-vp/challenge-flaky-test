@@ -153,6 +153,7 @@
 			2,
 			"tab"
 		],
+		"react/require-default-props": "off",
 		"react/jsx-wrap-multilines": "off",
 		"react/jsx-props-no-spreading": "off",
 		"react/prop-types": "off",
