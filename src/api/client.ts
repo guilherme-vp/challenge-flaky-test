@@ -1,9 +1,7 @@
 import { Courses } from './courses'
 
 interface ApiMethods {
-	loadCourses: (department: string) => {
-		then: (cb: (courses: string) => string) => void
-	}
+	loadCourses: (department: string) => (cb: (course: string[]) => void) => Promise<unknown>
 	loadPeople: () => {
 		then: (cb: (storage: any) => void) => any
 	}
@@ -12,13 +10,15 @@ interface ApiMethods {
 	}>
 }
 
-export const methods: ApiMethods = {
-	loadCourses: department => ({
-		then: cb => setTimeout(() => cb(Courses[department]), 1000)
-	}),
+export const apiClient: ApiMethods = {
+	loadCourses: department => cb =>
+		new Promise(resolve => resolve(setTimeout(() => cb(Courses[department]), 1000))),
 	loadPeople: () => ({
 		then: cb => {
-			setTimeout(() => cb(JSON.parse(localStorage.people || '[]')), Math.random() * 1000)
+			setTimeout(
+				() => cb(JSON.parse(localStorage.people || '[]')),
+				Math.random() * 1000
+			) as unknown as string
 		}
 	}),
 	savePeople: people => {
