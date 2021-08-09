@@ -26,8 +26,8 @@ interface FormFields {
 const schema = yup.object().shape({
 	name: yup.string().required(),
 	email: yup.string().required().email(),
-	course: yup.string(),
-	department: yup.string()
+	course: yup.string().required(),
+	department: yup.string().required()
 })
 
 export const RemotePersist = () => {
@@ -42,6 +42,7 @@ export const RemotePersist = () => {
 		resolver: yupResolver(schema),
 		mode: 'onChange'
 	})
+
 	const [state, setState] = useState<StateFields>({
 		people: [],
 		courses: [],
@@ -89,8 +90,8 @@ export const RemotePersist = () => {
 			})
 	}
 
-	const name = register('name', { required: true })
-	const email = register('email', { required: true })
+	const name = register('name', { required: true, minLength: 1 })
+	const email = register('email', { required: true, minLength: 1 })
 	const department = register('department', { required: true })
 	const course = register('course', { required: true })
 
