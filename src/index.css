@@ -2,6 +2,8 @@ body {
 	margin: 0;
 	padding: 2em 0;
 	font-family: sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 .ui.menu.fluid.pagination {
