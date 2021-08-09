@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { apiClient } from './api/client'
+import type { FormFields } from './10-remote-persist'
 
 interface SelectFields {
 	department: string | null
@@ -8,14 +9,12 @@ interface SelectFields {
 	loading?: boolean
 }
 
-type NameField = keyof Pick<SelectFields, 'course' | 'department'>
-
 interface SelectProps {
 	department: string
-	onChange: ({ name, value }: { name: NameField; value: string | null }) => void
+	onChange: (fields: Partial<FormFields['fields']>) => void
 }
 
-export const CourseSelect = ({ department, onChange }: SelectProps) => {
+export const CourseSelect = ({ onChange, department: _department }: SelectProps) => {
 	const [state, setState] = useState<SelectFields>({
 		department: '',
 		course: '',
@@ -23,31 +22,30 @@ export const CourseSelect = ({ department, onChange }: SelectProps) => {
 		loading: false
 	})
 
-	const fetchCourses = async (department: string) => {
+	const fetchCourses = async (departmentValue: string) => {
 		setState({ ...state, loading: true, courses: [] })
 
-		await apiClient.loadCourses(department)(courses => {
-			setState({ ...state, loading: false, courses })
+		await apiClient.loadCourses(departmentValue)(courses => {
+			setState({ ...state, department: departmentValue, loading: false, courses })
 		})
 	}
 
-	const onSelectDepartment = (e: React.ChangeEvent<HTMLSelectElement>) => {
+	const onSelectDepartment = async (e: React.ChangeEvent<HTMLSelectElement>) => {
 		const departmentValue = e.target.value
-		const courseValue = null
 
-		setState({ ...state, department: departmentValue, course: courseValue })
+		setState({ ...state, department: departmentValue, course: null })
+		onChange({ course: '', department: departmentValue })
 
-		onChange({ name: 'department', value: departmentValue })
-		onChange({ name: 'course', value: courseValue })
-
-		if (department) fetchCourses(department)
+		if (departmentValue) {
+			await fetchCourses(departmentValue)
+		}
 	}
 
 	const onSelectCourse = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		const courseValue = e.target.value
 
 		setState({ ...state, course: courseValue })
-		onChange({ name: 'course', value: courseValue })
+		onChange({ course: courseValue })
 	}
 
 	return (
@@ -61,6 +59,7 @@ export const CourseSelect = ({ department, onChange }: SelectProps) => {
 				<option value="core">NodeSchool: Core</option>
 				<option value="electives">NodeSchool: Electives</option>
 			</select>
+			<br />
 			<br />
 			{state.loading ? (
 				<img alt="loading" src="/img/loading.gif" />

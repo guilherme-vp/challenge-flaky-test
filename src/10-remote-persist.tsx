@@ -8,12 +8,12 @@ import CourseSelect from './09-course-select'
 const content = document.createElement('div')
 document.body.appendChild(content)
 
-interface FormFields {
+export interface FormFields {
 	fields: {
 		name: string
 		email: string
-		course: string | null
-		department: string | null
+		course: string
+		department: string
 	}
 	fieldErrors: Record<string, unknown>
 	people: Person[]
@@ -26,8 +26,8 @@ export const RemotePersist = () => {
 		fields: {
 			name: '',
 			email: '',
-			course: null,
-			department: null
+			course: '',
+			department: ''
 		},
 		fieldErrors: {},
 		people: [],
@@ -78,8 +78,8 @@ export const RemotePersist = () => {
 					fields: {
 						name: '',
 						email: '',
-						course: null,
-						department: null
+						course: '',
+						department: ''
 					},
 					saveStatus: 'SUCCESS'
 				})
@@ -90,12 +90,12 @@ export const RemotePersist = () => {
 			})
 	}
 
-	const onInputChange = ({ name, value }) => {
-		const { fields, fieldErrors } = state
-
-		fields[name] = value
-
-		setState({ ...state, fields, fieldErrors, saveStatus: 'READY' })
+	const onInputChange = (fields: Partial<FormFields['fields']>) => {
+		setState({
+			...state,
+			fields: { ...state.fields, ...fields },
+			saveStatus: 'READY'
+		})
 	}
 
 	if (state.loading) {
@@ -127,11 +127,7 @@ export const RemotePersist = () => {
 
 				<br />
 
-				<CourseSelect
-					department={state.fields.department ?? ''}
-					// course={state.fields.course ?? ''}
-					onChange={onInputChange}
-				/>
+				<CourseSelect department={state.fields.department} onChange={onInputChange} />
 
 				<br />
 

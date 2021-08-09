@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
+import { FormFields } from './10-remote-persist'
 
 interface FieldProps {
 	name: string
 	value: string
 	placeholder: string
 	validate: (value: string) => boolean | string
-	onChange: ({ name, value, error }) => void
+	onChange: (fields: Partial<FormFields['fields']>) => void
 }
 
 interface FieldState {
@@ -34,7 +35,7 @@ export const Field = ({
 			error
 		})
 
-		onChange({ name, value, error })
+		onChange({ [name]: value })
 	}
 
 	return (
