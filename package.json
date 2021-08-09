@@ -4,7 +4,6 @@
   "private": true,
   "author": "Guilherme Vieira <guivpw68@gmail.com>",
   "devDependencies": {
-    "@bahmutov/add-typescript-to-cypress": "^2.1.2",
     "@cypress/react": "^5.9.3",
     "@cypress/webpack-dev-server": "^1.4.0",
     "@types/cypress": "^1.1.3",
