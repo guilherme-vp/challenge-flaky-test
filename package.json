@@ -2,7 +2,7 @@
   "name": "challenge-flaky-test",
   "version": "1.0.0",
   "private": true,
-  "author": "David Guttman <david@guttman.io> (http://davidguttman.com/)",
+  "author": "Guilherme Vieira <guivpw68@gmail.com>",
   "devDependencies": {
     "cypress": "^7.1.0",
     "react-scripts": "0.9.5"
